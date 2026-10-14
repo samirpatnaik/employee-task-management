@@ -1,0 +1,35 @@
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Department</th>
+      <th>Designation</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    @for (employee of employees(); track employee._id) {
+      <tr>
+        <td>{{ employee.name }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.department }}</td>
+        <td>{{ employee.designation }}</td>
+        <td>{{ employee.status }}</td>
+        <td>
+          <button type="button" (click)="viewEmployee.emit(employee._id)">View</button>
+          <button type="button" (click)="editEmployee.emit(employee._id)">Edit</button>
+          <button
+            type="button"
+            [disabled]="deletingEmployeeId() === employee._id"
+            (click)="deleteEmployee.emit(employee._id)"
+          >
+            {{ deletingEmployeeId() === employee._id ? 'Deleting...' : 'Delete' }}
+          </button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

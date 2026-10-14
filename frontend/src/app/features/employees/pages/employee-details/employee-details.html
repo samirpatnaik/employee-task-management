@@ -1,0 +1,33 @@
+<h1>Employee Details</h1>
+<button type="button" (click)="onBackToList()">Back to Employees</button>
+
+@if (error()) {
+  <p>{{ error() }}</p>
+}
+
+@if (loading()) {
+  <p>Loading employee details...</p>
+}
+@if (notfound()) {
+  <p>Employee not found.</p>
+}
+
+@if (employee$ | async; as response) {
+  <button type="button" [disabled]="deleting() || loading()" (click)="onEditEmployee()">
+    Edit Employee
+  </button>
+  <button type="button" [disabled]="deleting() || loading()" (click)="onDeleteEmployee()">
+    {{ deleting() ? 'Deleting...' : 'Delete Employee' }}
+  </button>
+  <h2>{{ response.data.name }}</h2>
+
+  <div>
+    <p><strong>Email:</strong> {{ response.data.email }}</p>
+    <p><strong>Phone:</strong> {{ response.data.phone }}</p>
+    <p><strong>Department:</strong> {{ response.data.department }}</p>
+    <p><strong>Designation:</strong> {{ response.data.designation }}</p>
+    <p><strong>Status:</strong> {{ response.data.status }}</p>
+  </div>
+} @else {
+  <p>Employee not found.</p>
+}

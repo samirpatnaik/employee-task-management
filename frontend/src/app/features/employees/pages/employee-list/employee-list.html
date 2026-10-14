@@ -1,0 +1,80 @@
+<h1>Employees</h1>
+<div>
+  <button type="button" (click)="onAddEmployee()">Add Employee</button>
+</div>
+<div>
+  <label>Search Employee</label>
+  <input
+    id="search"
+    type="search"
+    [value]="search()"
+    (input)="search.set($any($event.target).value)"
+    placeholder="Search by name, email, department..."
+  />
+</div>
+<div>
+  <label>Status</label>
+  <select id="status" [value]="status()" (change)="status.set($any($event.target).value)">
+    <option value="">All</option>
+    <option value="active">Active</option>
+    <option value="inactive">Inactive</option>
+  </select>
+  <button type="button" (click)="clearFilters()">Clear Filters</button>
+</div>
+
+@if (error()) {
+  <p>{{ error() }}</p>
+}
+
+@if (loading()) {
+  <p>Loading employees...</p>
+}
+
+@if (employees$ | async; as response) {
+  <p>Total employees: {{ response.data.pagination.total }}</p>
+
+  @if (response.data.employees.length > 0) {
+    <p>
+      Showing
+      {{ (page() - 1) * limit() + 1 }}
+      -
+      {{ Math.min(page() * limit(), response.data.pagination.total) }}
+      of
+      {{ response.data.pagination.total }}
+      employees
+    </p>
+    <app-employee-table
+      [employees]="response.data.employees"
+      (viewEmployee)="onViewEmployee($event)"
+      (editEmployee)="onEditEmployee($event)"
+      (deleteEmployee)="onDeleteEmployee($event)"
+      [deletingEmployeeId]="deletingEmployeeId()"
+    />
+  } @else {
+    @if (search() || status()) {
+      <p>No employees found for the given search criteria.</p>
+    } @else {
+      <p>No employees found.</p>
+    }
+  }
+}
+
+@if (employees$ | async; as response) {
+  @if (response.data.pagination.totalPages > 1) {
+    <div>
+      <button type="button" [disabled]="page() === 1" (click)="page.set(page() - 1)">
+        Previous
+      </button>
+
+      <span> Page {{ page() }} of {{ response.data.pagination.totalPages }} </span>
+
+      <button
+        type="button"
+        [disabled]="page() === response.data.pagination.totalPages"
+        (click)="page.set(page() + 1)"
+      >
+        Next
+      </button>
+    </div>
+  }
+}

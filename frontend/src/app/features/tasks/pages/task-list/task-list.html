@@ -1,0 +1,23 @@
+<section class="task-list">
+  <h1>Tasks</h1>
+
+  @if (isLoading()) {
+    <p>Loading tasks...</p>
+  } @else if (error()) {
+    <p role="alert">{{ error() }}</p>
+    <button type="button" (click)="fetchTasks()">Retry</button>
+  } @else if (tasks().length === 0) {
+    <p>No tasks found.</p>
+  } @else {
+    <ul>
+      @for (task of tasks(); track task._id) {
+        <li>
+          <h2>{{ task.title }}</h2>
+          <p>{{ task.description }}</p>
+          <p>Status: {{ task.status }}</p>
+          <p>Priority: {{ task.priority }}</p>
+        </li>
+      }
+    </ul>
+  }
+</section>
