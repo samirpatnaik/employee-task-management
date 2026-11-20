@@ -174,9 +174,7 @@ The project aims to follow these practices:
 
 ## Project Ownership and License
 
-This project is being developed as a personal software project.
-
-A license has not yet been specified. Until a license is added, do not assume that others have permission to reuse, distribute, or modify the code.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Author
 
